@@ -3,10 +3,16 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Index Page")
+    return render(request, 'index.html')
 
 def login(request):
-    return HttpResponse("Login Page")
+    return render(request, 'login.html')
 
 def register(request):
-    return HttpResponse("Register Page")
+    return render(request, 'register.html')
+
+def create_blog(request):
+    return render(request, 'create-blog.html')
+
+def page_not_found_view(request, exception):
+    return render(request, '404.html', status=404)

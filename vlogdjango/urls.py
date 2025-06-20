@@ -16,11 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog.views import index, login, register
+from blog.views import index, login, register, page_not_found_view, create_blog
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('login/', login, name='login'),
-    path('register/', register, name='register')
+    path('register/', register, name='register'),
+    path('create/', create_blog, name='create_blog')
 ]
+
+handler404 = 'blog.views.page_not_found_view'

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Post - Blog System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .create-form {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="url"],
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-group input[type="text"]:focus,
+        .form-group input[type="url"]:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            min-height: 400px;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-help {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border: 2px solid #e1e5e9;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .toolbar-btn {
+            padding: 0.4rem 0.8rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.2s ease;
+        }
+        
+        .toolbar-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .toolbar-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .content-editor {
+            border-radius: 0 0 5px 5px;
+            border-top: none;
+        }
+        
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            min-height: 45px;
+            cursor: text;
+        }
+        
+        .tag-item {
+            background: #667eea;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .tag-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
+            font-size: 0.9rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e1e5e9;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .preview-mode {
+            background: white;
+            padding: 2rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            min-height: 400px;
+        }
+        
+        .preview-mode h1, .preview-mode h2, .preview-mode h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .preview-mode p {
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .create-form {
+                padding: 1.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .toolbar {
+                gap: 0.25rem;
+            }
+            
+            .toolbar-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">BlogSystem</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="create-blog.html">Write Post</a>
+                <a href="login.html">Login</a>
+                <a href="register.html">Register</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="page-header">
+            <h1>Create New Blog Post</h1>
+            <p>Share your thoughts and ideas with the community</p>
+        </div>
+        
+        <!-- Error message section - uncomment when implementing backend
+        <div class="error-message" style="background-color: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 5px; margin-bottom: 1.5rem; border: 1px solid #f5c6cb; max-width: 900px; margin-left: auto; margin-right: auto;">
+            Something went wrong. Please try again.
+        </div>
+        -->
+        
+        <form class="create-form">
+            <div class="form-group">
+                <label for="title">Post Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter an engaging title for your post" required>
+                <div class="form-help">A compelling title helps readers understand what your post is about</div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="technology">Technology</option>
+                        <option value="programming">Programming</option>
+                        <option value="design">Design</option>
+                        <option value="business">Business</option>
+                        <option value="lifestyle">Lifestyle</option>
+                        <option value="tutorial">Tutorial</option>
+                        <option value="opinion">Opinion</option>
+                        <option value="news">News</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="featured-image">Featured Image URL</label>
+                    <input type="url" id="featured-image" name="featured-image" placeholder="https://example.com/image.jpg">
+                    <div class="form-help">Optional: Add a featured image for your post</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="excerpt">Post Excerpt</label>
+                <input type="text" id="excerpt" name="excerpt" placeholder="Write a brief summary of your post (150 characters max)" maxlength="150">
+                <div class="form-help">This will be shown in the post preview on the homepage</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="tags">Tags</label>
+                <div class="tags-input" id="tags-container">
+                    <input type="text" class="tag-input" placeholder="Type a tag and press Enter" id="tag-input">
+                </div>
+                <div class="form-help">Add relevant tags to help readers find your content</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="content">Post Content</label>
+                <div class="toolbar">
+                    <button type="button" class="toolbar-btn" data-action="bold"><strong>B</strong></button>
+                    <button type="button" class="toolbar-btn" data-action="italic"><em>I</em></button>
+                    <button type="button" class="toolbar-btn" data-action="underline"><u>U</u></button>
+                    <button type="button" class="toolbar-btn" data-action="heading">H1</button>
+                    <button type="button" class="toolbar-btn" data-action="heading2">H2</button>
+                    <button type="button" class="toolbar-btn" data-action="link">🔗</button>
+                    <button type="button" class="toolbar-btn" data-action="list">• List</button>
+                    <button type="button" class="toolbar-btn" data-action="quote">" Quote</button>
+                    <button type="button" class="toolbar-btn" data-action="code">&lt;/&gt;</button>
+                    <button type="button" class="toolbar-btn" data-action="preview">👁️ Preview</button>
+                </div>
+                <textarea id="content" name="content" class="content-editor" placeholder="Write your blog post content here...\n\nYou can use markdown formatting:\n- **bold text**\n- *italic text*\n- # Heading 1\n- ## Heading 2\n- [link text](url)\n- > blockquote\n- `code`\n\nStart writing your amazing content!" required></textarea>
+                <div class="form-help">Use markdown formatting for rich text. Click the toolbar buttons for quick formatting options.</div>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="publish-immediately" name="publish-immediately" checked>
+                    Publish immediately
+                </label>
+                <div class="form-help">Uncheck to save as draft</div>
+            </div>
+            
+            <div class="form-actions">
+                <a href="../" class="btn btn-outline">Cancel</a>
+                <button type="button" class="btn btn-secondary">Save as Draft</button>
+                <button type="submit" class="btn btn-primary">Publish Post</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // Simple tag input functionality
+        const tagInput = document.getElementById('tag-input');
+        const tagsContainer = document.getElementById('tags-container');
+        const tags = [];
+        
+        tagInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const tagText = this.value.trim();
+                if (tagText && !tags.includes(tagText)) {
+                    addTag(tagText);
+                    this.value = '';
+                }
+            }
+        });
+        
+        function addTag(text) {
+            tags.push(text);
+            const tagElement = document.createElement('div');
+            tagElement.className = 'tag-item';
+            tagElement.innerHTML = `
+                ${text}
+                <span class="tag-remove" onclick="removeTag('${text}', this.parentElement)">×</span>
+            `;
+            tagsContainer.insertBefore(tagElement, tagInput);
+        }
+        
+        function removeTag(text, element) {
+            const index = tags.indexOf(text);
+            if (index > -1) {
+                tags.splice(index, 1);
+            }
+            element.remove();
+        }
+        
+        // Simple toolbar functionality
+        const toolbar = document.querySelector('.toolbar');
+        const contentTextarea = document.getElementById('content');
+        let isPreviewMode = false;
+        
+        toolbar.addEventListener('click', function(e) {
+            if (e.target.classList.contains('toolbar-btn')) {
+                e.preventDefault();
+                const action = e.target.getAttribute('data-action');
+                handleToolbarAction(action, e.target);
+            }
+        });
+        
+        function handleToolbarAction(action, button) {
+            const textarea = contentTextarea;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            
+            let replacement = '';
+            
+            switch(action) {
+                case 'bold':
+                    replacement = `**${selectedText || 'bold text'}**`;
+                    break;
+                case 'italic':
+                    replacement = `*${selectedText || 'italic text'}*`;
+                    break;
+                case 'underline':
+                    replacement = `<u>${selectedText || 'underlined text'}</u>`;
+                    break;
+                case 'heading':
+                    replacement = `# ${selectedText || 'Heading 1'}`;
+                    break;
+                case 'heading2':
+                    replacement = `## ${selectedText || 'Heading 2'}`;
+                    break;
+                case 'link':
+                    replacement = `[${selectedText || 'link text'}](url)`;
+                    break;
+                case 'list':
+                    replacement = `- ${selectedText || 'list item'}`;
+                    break;
+                case 'quote':
+                    replacement = `> ${selectedText || 'quoted text'}`;
+                    break;
+                case 'code':
+                    replacement = `\`${selectedText || 'code'}\``;
+                    break;
+                case 'preview':
+                    togglePreview(button);
+                    return;
+            }
+            
+            if (replacement) {
+                textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+                textarea.focus();
+                textarea.setSelectionRange(start + replacement.length, start + replacement.length);
+            }
+        }
+        
+        function togglePreview(button) {
+            const contentGroup = document.querySelector('.form-group:has(#content)');
+            
+            if (!isPreviewMode) {
+                // Switch to preview mode
+                const content = contentTextarea.value;
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'preview-mode';
+                previewDiv.innerHTML = markdownToHtml(content);
+                
+                contentTextarea.style.display = 'none';
+                contentGroup.appendChild(previewDiv);
+                button.textContent = '✏️ Edit';
+                button.classList.add('active');
+                isPreviewMode = true;
+            } else {
+                // Switch back to edit mode
+                const previewDiv = contentGroup.querySelector('.preview-mode');
+                if (previewDiv) {
+                    previewDiv.remove();
+                }
+                contentTextarea.style.display = 'block';
+                button.textContent = '👁️ Preview';
+                button.classList.remove('active');
+                isPreviewMode = false;
+            }
+        }
+        
+        // Simple markdown to HTML converter
+        function markdownToHtml(markdown) {
+            return markdown
+                .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+                .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2">$1</a>')
+                .replace(/^- (.*$)/gm, '<li>$1</li>')
+                .replace(/\n/g, '<br>');
+        }
+    </script>
+</body>
+</html>

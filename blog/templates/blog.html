@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post - Blog System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #764ba2;
+        }
+        
+        .back-link::before {
+            content: '←';
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .blog-post {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .blog-header {
+            padding: 2rem;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .blog-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .blog-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .meta-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+        
+        .blog-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .blog-content {
+            padding: 2rem;
+        }
+        
+        .blog-content h2 {
+            color: #333;
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem 0;
+            font-weight: 600;
+        }
+        
+        .blog-content h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.75rem 0;
+            font-weight: 600;
+        }
+        
+        .blog-content p {
+            color: #444;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .blog-content ul, .blog-content ol {
+            margin: 1rem 0 1.5rem 2rem;
+            color: #444;
+        }
+        
+        .blog-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        .blog-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #555;
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .blog-content code {
+            background: #f1f3f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #d63384;
+        }
+        
+        .blog-content pre {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid #e1e5e9;
+        }
+        
+        .blog-content pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+        
+        .blog-footer {
+            padding: 2rem;
+            border-top: 1px solid #e1e5e9;
+            background: #f8f9fa;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tag {
+            background: #667eea;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        
+        .tag:hover {
+            background: #764ba2;
+        }
+        
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .author-details h4 {
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .author-details p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .blog-title {
+                font-size: 2rem;
+            }
+            
+            .blog-header, .blog-content, .blog-footer {
+                padding: 1.5rem;
+            }
+            
+            .blog-meta {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">BlogSystem</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="create-blog.html">Write Post</a>
+                <a href="login.html">Login</a>
+                <a href="register.html">Register</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <a href="index.html" class="back-link">Back to all posts</a>
+        
+        <article class="blog-post">
+            <header class="blog-header">
+                <h1 class="blog-title">Getting Started with Web Development</h1>
+                <div class="blog-meta">
+                    <div class="meta-item">
+                        <span>👤</span>
+                        <span>By John Doe</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>📅</span>
+                        <span>March 15, 2024</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>5 min read</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="blog-image">
+                Featured Image Placeholder
+            </div>
+            
+            <div class="blog-content">
+                <p>
+                    Welcome to the exciting world of web development! Whether you're a complete beginner or looking to refresh your knowledge, this comprehensive guide will walk you through the essential building blocks of modern web development.
+                </p>
+                
+                <h2>What is Web Development?</h2>
+                <p>
+                    Web development is the process of creating websites and web applications that run on the internet. It involves a combination of programming languages, frameworks, and tools that work together to create interactive and functional web experiences.
+                </p>
+                
+                <h2>The Three Pillars of Web Development</h2>
+                
+                <h3>1. HTML (HyperText Markup Language)</h3>
+                <p>
+                    HTML is the foundation of every website. It provides the structure and content of web pages using elements and tags. Think of HTML as the skeleton of your website.
+                </p>
+                
+                <h3>2. CSS (Cascading Style Sheets)</h3>
+                <p>
+                    CSS is responsible for the visual presentation of your website. It controls colors, fonts, layouts, and animations. CSS is what makes your website look beautiful and professional.
+                </p>
+                
+                <h3>3. JavaScript</h3>
+                <p>
+                    JavaScript brings interactivity to your website. It allows you to create dynamic content, handle user interactions, and build complex web applications.
+                </p>
+                
+                <blockquote>
+                    "The best way to learn web development is by building projects. Start small, be consistent, and don't be afraid to make mistakes."
+                </blockquote>
+                
+                <h2>Getting Started</h2>
+                <p>
+                    Here are some steps to begin your web development journey:
+                </p>
+                
+                <ol>
+                    <li>Set up a code editor (VS Code, Sublime Text, or Atom)</li>
+                    <li>Learn HTML basics and create your first webpage</li>
+                    <li>Add styling with CSS</li>
+                    <li>Introduce interactivity with JavaScript</li>
+                    <li>Build your first complete project</li>
+                    <li>Learn about responsive design</li>
+                    <li>Explore frameworks and libraries</li>
+                </ol>
+                
+                <h2>Essential Tools</h2>
+                <p>
+                    As you progress in your web development journey, you'll want to familiarize yourself with these essential tools:
+                </p>
+                
+                <ul>
+                    <li><strong>Code Editor:</strong> VS Code, Sublime Text, or WebStorm</li>
+                    <li><strong>Version Control:</strong> Git and GitHub</li>
+                    <li><strong>Browser Developer Tools:</strong> Chrome DevTools, Firefox Developer Tools</li>
+                    <li><strong>Package Managers:</strong> npm, yarn</li>
+                    <li><strong>Build Tools:</strong> Webpack, Vite, Parcel</li>
+                </ul>
+                
+                <p>
+                    Remember, web development is a continuous learning process. Technologies evolve rapidly, and there's always something new to discover. Stay curious, practice regularly, and don't hesitate to ask for help when you need it.
+                </p>
+                
+                <p>
+                    Good luck on your web development journey! The skills you learn will open up countless opportunities in the digital world.
+                </p>
+            </div>
+            
+            <footer class="blog-footer">
+                <div class="tags">
+                    <a href="#" class="tag">Web Development</a>
+                    <a href="#" class="tag">HTML</a>
+                    <a href="#" class="tag">CSS</a>
+                    <a href="#" class="tag">JavaScript</a>
+                    <a href="#" class="tag">Beginner</a>
+                </div>
+                
+                <div class="author-info">
+                    <div class="author-avatar">JD</div>
+                    <div class="author-details">
+                        <h4>John Doe</h4>
+                        <p>Full-stack developer with 5+ years of experience in web technologies</p>
+                    </div>
+                </div>
+            </footer>
+        </article>
+    </div>
+</body>
+</html>
