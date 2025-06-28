@@ -22,7 +22,7 @@
         
         <form class="login-form">
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">Username / Email</label>
                 <input type="text" id="username" name="username" required>
             </div>
             
@@ -35,7 +35,7 @@
         </form>
         
         <div class="login-footer">
-            <p>Don't have an account? <a href="../register">Sign up here</a></p>
+            <p>Don't have an account? <a href="{% url 'register' %}">Sign up here</a></p>
         </div>
     </div>
 </body>

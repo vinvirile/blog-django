@@ -1,25 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Home - All Posts</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">BlogSystem</a>
-            <div class="nav-links">
-                <a href="../">Home</a>
-                <a href="../create">Write Post</a>
-                <a href="../login">Login</a>
-                <a href="../register">Register</a>
-            </div>
-        </div>
-    </nav>
-    
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
     <div class="container">
         <div class="page-header">
             <h1>Latest Blog Posts</h1>
@@ -41,7 +23,7 @@
                     <p class="blog-excerpt">
                         Learn the fundamentals of web development including HTML, CSS, and JavaScript. This comprehensive guide will take you from beginner to building your first website.
                     </p>
-                    <a href="blog.html" class="read-more">Read More</a>
+                    <a href="./blog" class="read-more">Read More</a>
                 </div>
             </article>
             
@@ -77,7 +59,7 @@
                     <p class="blog-excerpt">
                         Design principles that will help you create better user experiences. Learn about color theory, typography, and layout techniques that make interfaces shine.
                     </p>
-                    <a href="blog.html" class="read-more">Read More</a>
+                    <a href="./blog" class="read-more">Read More</a>
                 </div>
             </article>
             
@@ -95,7 +77,7 @@
                     <p class="blog-excerpt">
                         Dive into the world of data science with Python. Learn about pandas, numpy, and matplotlib to analyze and visualize data effectively.
                     </p>
-                    <a href="blog.html" class="read-more">Read More</a>
+                    <a href="./blog" class="read-more">Read More</a>
                 </div>
             </article>
         </div>
@@ -109,5 +91,4 @@
         </div>
         -->
     </div>
-</body>
-</html>
+{% endblock %}

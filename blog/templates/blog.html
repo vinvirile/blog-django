@@ -1,27 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Post - Blog System</title>
-    {% load static %}
-     <link rel="stylesheet" href="{% static 'css/index.css' %}">
- </head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">BlogSystem</a>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="create-blog.html">Write Post</a>
-                <a href="login.html">Login</a>
-                <a href="register.html">Register</a>
-            </div>
-        </div>
-    </nav>
-    
+{% extends 'base.html' %}
+{% block title %}Blog Title{% endblock %}
+
+{% block content %}
     <div class="container narrow">
-        <a href="index.html" class="back-link">Back to all posts</a>
+        <a href="{% url 'index' %}" class="back-link">Back to all posts</a>
         
         <article class="blog-post">
             <header class="blog-header">
@@ -133,5 +115,4 @@
             </footer>
         </article>
     </div>
-</body>
-</html>
+    {% endblock %}

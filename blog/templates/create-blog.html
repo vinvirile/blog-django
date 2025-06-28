@@ -1,25 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Post - Blog System</title>
-    {% load static %}
-     <link rel="stylesheet" href="{% static 'css/index.css' %}">
- </head>
-<body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">BlogSystem</a>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="create-blog.html">Write Post</a>
-                <a href="login.html">Login</a>
-                <a href="register.html">Register</a>
-            </div>
-        </div>
-    </nav>
-    
+{% extends 'base.html' %}
+{% block title %}Create New Post{% endblock %}
+
+{% block content %}
+
+
     <div class="container medium">
         <div class="page-header">
             <h1>Create New Blog Post</h1>
@@ -250,5 +234,4 @@
                 .replace(/\n/g, '<br>');
         }
     </script>
-</body>
-</html>
+    {% endblock %}
