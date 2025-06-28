@@ -14,5 +14,8 @@ def register(request):
 def create_blog(request):
     return render(request, 'create-blog.html')
 
+def view_blog(request):
+    return render(request, 'blog.html')
+
 def page_not_found_view(request, exception):
     return render(request, '404.html', status=404)
