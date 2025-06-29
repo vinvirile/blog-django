@@ -13,27 +13,29 @@
             <h1>Create Account</h1>
             <p>Join our blog community today</p>
         </div>
-        
-        <!-- Error message section - uncomment when implementing backend
+
+        {% if error %}
         <div class="error-message" style="background-color: #f8d7da; color: #721c24; padding: 0.75rem; border-radius: 5px; margin-bottom: 1.5rem; border: 1px solid #f5c6cb;">
-            Something went wrong. Please try again.
+            {{ error }}
         </div>
-        -->
+        {% endif %}
         
-        <form class="register-form">
+        
+        <form class="register-form" method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
+                {{ form.email }}
             </div>
             
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                {{ form.username }}
             </div>
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                {{ form.password }}
                 <div class="password-requirements">
                     Password should be at least 8 characters long
                 </div>
@@ -41,7 +43,7 @@
             
             <div class="form-group">
                 <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm-password" required>
+                {{ form.confirm_password }}
             </div>
             
             <button type="submit" class="register-btn">Create Account</button>

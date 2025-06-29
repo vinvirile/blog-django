@@ -15,9 +15,18 @@
             <a href="{% url 'index' %}" class="logo">BlogSystem</a>
             <div class="nav-links">
                 <a href="{% url 'index' %}">Home</a>
+                {% if user %}
                 <a href="{% url 'create_blog' %}">Write Post</a>
+                {% endif %}
+                {% if not user %}
                 <a href="{% url 'login' %}">Login</a>
                 <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+
+                {% if user %}
+                <a href="">{{ user.username }}</a>
+                <a href="{% url 'logout' %}">Logout</a>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -25,4 +34,4 @@
     {% block content %}
     {% endblock %}
 </body>
-</html>s
+</html>

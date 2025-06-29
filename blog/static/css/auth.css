@@ -84,10 +84,32 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s ease;
+    margin-bottom: 1rem;
 }
 
 .login-btn:hover,
 .register-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Demo Button Styles */
+.demo-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: transparent;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.demo-btn:hover {
+    background: #667eea;
+    color: white;
     transform: translateY(-2px);
 }
 
