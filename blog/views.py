@@ -1,6 +1,6 @@
 import string
 from django.shortcuts import render
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, CreateBlogForm
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
 from .models import Members
@@ -154,11 +154,17 @@ def create_blog(request):
     # check if user logged in
     if not request.session.get('eid'):
         return redirect('../login')
-        
-    return render(request, 'create-blog.html', {'user': grab_user_content(request)})
+
+    if request.method == 'POST':
+        form = CreateBlogForm(request.POST)
+        if form.is_valid():
+            return HttpResponse("listo")
+
+    form = CreateBlogForm()
+    return render(request, 'create-blog.html', {'user': grab_user_content(request), 'form': form})
 
 def view_blog(request):
-    return render(request, 'blog.html', {'user': grab_user_content(request)})
+    return render(request, 'demo-blog.html', {'user': grab_user_content(request)})
 
 def page_not_found_view(request, exception):
     return render(request, '404.html', status=404)

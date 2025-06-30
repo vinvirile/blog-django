@@ -25,3 +25,23 @@ class Members(models.Model):
         return self.username
 
 
+class Blogs(models.Model):
+    id = models.AutoField(primary_key=True)
+    author_eid = models.CharField(max_length=128)
+    title = models.CharField(max_length=84)
+    image_url = models.TextField(max_length=2000)
+    blog_content = models.TextField(max_length=10000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    read_time = models.IntegerField(default=0)
+    tags = models.CharField(max_length=255)
+
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+        ('archived', 'Archived'),
+        ('deleted', 'Deleted')
+    ]
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
+    

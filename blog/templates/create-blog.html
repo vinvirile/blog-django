@@ -16,46 +16,37 @@
         </div>
         -->
         
-        <form class="create-form">
+        <form class="create-form" method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="title">Post Title</label>
-                <input type="text" id="title" name="title" placeholder="Enter an engaging title for your post" required>
+                {{ form.title }}
                 <div class="form-help">A compelling title helps readers understand what your post is about</div>
             </div>
             
             <div class="form-row">
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <select id="category" name="category" required>
-                        <option value="">Select a category</option>
-                        <option value="technology">Technology</option>
-                        <option value="programming">Programming</option>
-                        <option value="design">Design</option>
-                        <option value="business">Business</option>
-                        <option value="lifestyle">Lifestyle</option>
-                        <option value="tutorial">Tutorial</option>
-                        <option value="opinion">Opinion</option>
-                        <option value="news">News</option>
-                    </select>
+                    {{ form.category }}
                 </div>
                 
                 <div class="form-group">
                     <label for="featured-image">Featured Image URL</label>
-                    <input type="url" id="featured-image" name="featured-image" placeholder="https://example.com/image.jpg">
+                    {{ form.image_url }}
                     <div class="form-help">Optional: Add a featured image for your post</div>
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="excerpt">Post Excerpt</label>
-                <input type="text" id="excerpt" name="excerpt" placeholder="Write a brief summary of your post (150 characters max)" maxlength="150">
+                {{ form.excerpt }}
                 <div class="form-help">This will be shown in the post preview on the homepage</div>
             </div>
             
             <div class="form-group">
                 <label for="tags">Tags</label>
                 <div class="tags-input" id="tags-container">
-                    <input type="text" class="tag-input" placeholder="Type a tag and press Enter" id="tag-input">
+                    {{ form.tags }}
                 </div>
                 <div class="form-help">Add relevant tags to help readers find your content</div>
             </div>
@@ -74,13 +65,13 @@
                     <button type="button" class="toolbar-btn" data-action="code">&lt;/&gt;</button>
                     <button type="button" class="toolbar-btn" data-action="preview">👁️ Preview</button>
                 </div>
-                <textarea id="content" name="content" class="content-editor" placeholder="Write your blog post content here...\n\nYou can use markdown formatting:\n- **bold text**\n- *italic text*\n- # Heading 1\n- ## Heading 2\n- [link text](url)\n- > blockquote\n- `code`\n\nStart writing your amazing content!" required></textarea>
+                {{ form.blog_content }}
                 <div class="form-help">Use markdown formatting for rich text. Click the toolbar buttons for quick formatting options.</div>
             </div>
             
             <div class="form-group">
                 <label>
-                    <input type="checkbox" id="publish-immediately" name="publish-immediately" checked>
+                    {{ form.status }}
                     Publish immediately
                 </label>
                 <div class="form-help">Uncheck to save as draft</div>
