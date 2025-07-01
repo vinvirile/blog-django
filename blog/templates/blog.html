@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Blog Title{% endblock %}
+
+{% block content %}
+    <div class="container narrow">
+        <a href="{% url 'index' %}" class="back-link">Back to all posts</a>
+        
+        <article class="blog-post">
+            <header class="blog-header">
+                <h1 class="blog-title">{{ blog.title }}</h1>
+                <div class="blog-meta">
+                    <div class="meta-item">
+                        <span>👤</span>
+                        <span>By {{ blog.author }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>📅</span>
+                        <span>{{ blog.created_at }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span>{{ blog.read_time }} min read</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="blog-image">
+                <img src="{{ blog.image_url }}" width="180" />
+            </div>
+            
+            <div class="blog-content">
+                {{ blog.blog_content|safe }}
+            </div>
+            
+            <footer class="blog-footer">
+                <!-- <div class="tags">
+                    <a href="#" class="tag">Web Development</a>
+                    <a href="#" class="tag">HTML</a>
+                    <a href="#" class="tag">CSS</a>
+                    <a href="#" class="tag">JavaScript</a>
+                    <a href="#" class="tag">Beginner</a>
+                </div> -->
+                
+                
+                <div class="author-info">
+                    <div class="author-avatar">JD</div>
+                    <div class="author-details">
+                        <h4>{{ blog.author }}</h4>
+                        <!-- <p>Full-stack developer with 5+ years of experience in web technologies</p> -->
+                    </div>
+                </div>
+            </footer>
+        </article>
+    </div>
+    <script type="text/javascript">
+        // Get the blog content element
+        let blogContent = document.querySelector('.blog-content');
+        
+        // Convert markdown to HTML using marked.js
+        document.addEventListener('DOMContentLoaded', function() {
+            if (blogContent) {
+                const markdownContent = blogContent.textContent.trim();
+                blogContent.innerHTML = marked.parse(markdownContent);
+            }
+        });
+    </script>
+    <!-- Include marked.js library for markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    {% endblock %}

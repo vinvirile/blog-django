@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .forms import LoginForm, RegisterForm, CreateBlogForm
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password, check_password
-from .models import Members
+from .models import Members, Blogs
 from django.shortcuts import redirect
 import datetime
 
@@ -15,6 +15,23 @@ def grab_user_content(request):
 # Create your views here.
 def index(request):
     return render(request, 'index.html', {'user': grab_user_content(request)})
+
+def hash_string(text):
+                """Create custom hash with random letters and numbers"""
+                # Use built-in hash for consistency, then convert to alphanumeric
+                hash_int = hash(text)
+                
+                # Convert to positive number and create alphanumeric string
+                hash_abs = abs(hash_int)
+                chars = string.ascii_letters + string.digits
+                result = ""
+                
+                # Convert number to base-62 (letters + digits)
+                while hash_abs > 0:
+                    result = chars[hash_abs % 62] + result
+                    hash_abs //= 62
+                
+                return result[:16]  # Limit to 16 characters
 
 def login(request):
 
@@ -114,23 +131,7 @@ def register(request):
             # grab the current date
             date = datetime.datetime.now()
 
-            # creates a string for eid
-            def hash_string(text):
-                """Create custom hash with random letters and numbers"""
-                # Use built-in hash for consistency, then convert to alphanumeric
-                hash_int = hash(text)
-                
-                # Convert to positive number and create alphanumeric string
-                hash_abs = abs(hash_int)
-                chars = string.ascii_letters + string.digits
-                result = ""
-                
-                # Convert number to base-62 (letters + digits)
-                while hash_abs > 0:
-                    result = chars[hash_abs % 62] + result
-                    hash_abs //= 62
-                
-                return result[:16]  # Limit to 16 characters
+            
 
             # create user
             members = Members(
@@ -158,12 +159,57 @@ def create_blog(request):
     if request.method == 'POST':
         form = CreateBlogForm(request.POST)
         if form.is_valid():
-            return HttpResponse("listo")
+
+            title = form.cleaned_data['title']
+            category = form.cleaned_data['category']
+            excerpt = form.cleaned_data['excerpt']
+            image_url = form.cleaned_data['image_url']
+            blog_content = form.cleaned_data['blog_content']
+            tags = form.cleaned_data['hidden_tags']
+            status = form.cleaned_data['status']
+
+            # return a table of all the fields in a HttpResponse
+
+            # Create HTML table to display form field values
+            # table_html = f"""
+            # <table border="1" style="border-collapse: collapse; width: 100%;">
+            #     <tr><th style="padding: 8px;">Field</th><th style="padding: 8px;">Value</th></tr>
+            #     <tr><td style="padding: 8px;">Title</td><td style="padding: 8px;">{title}</td></tr>
+            #     <tr><td style="padding: 8px;">Category</td><td style="padding: 8px;">{category}</td></tr>
+            #     <tr><td style="padding: 8px;">Excerpt</td><td style="padding: 8px;">{excerpt}</td></tr>
+            #     <tr><td style="padding: 8px;">Image URL</td><td style="padding: 8px;">{image_url}</td></tr>
+            #     <tr><td style="padding: 8px;">Blog Content</td><td style="padding: 8px;">{blog_content}</td></tr>
+            #     <tr><td style="padding: 8px;">Tags</td><td style="padding: 8px;">{tags}</td></tr>
+            #     <tr><td style="padding: 8px;">Status</td><td style="padding: 8px;">{status}</td></tr>
+            # </table>
+            # """
+
+            blog = Blogs(
+                author_eid=request.session.get('eid'),
+                eid=hash_string(title+category+tags+str(datetime.datetime.now())),
+                title=title,
+                category=category,
+                excerpt=excerpt,
+                image_url=image_url,
+                blog_content=blog_content,
+                tags=tags,
+                status=status
+            )
+            blog.save()
+
+            return redirect('../blog?id='+blog.eid)
+
+        return HttpResponse('Something went wrong')
 
     form = CreateBlogForm()
     return render(request, 'create-blog.html', {'user': grab_user_content(request), 'form': form})
 
 def view_blog(request):
+    if request.method == 'GET':
+        eid = request.GET.get('id')
+        blog = Blogs.objects.get(eid=eid)
+        blog.author = Members.objects.get(eid=blog.author_eid)
+        return render(request, 'blog.html', {'user': grab_user_content(request), 'blog': blog})
     return render(request, 'demo-blog.html', {'user': grab_user_content(request)})
 
 def page_not_found_view(request, exception):

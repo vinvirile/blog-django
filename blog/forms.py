@@ -38,6 +38,7 @@ class CreateBlogForm(forms.Form):
         })
     )
     tags = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'placeholder': 'Type a tag and press Enter', 'class': 'tag-input', 'id': 'tag-input'}))
+    hidden_tags = forms.CharField(widget=forms.HiddenInput(attrs={'id': 'hidden-tags'}))
     status = forms.BooleanField(
         required=False,
         initial=True,

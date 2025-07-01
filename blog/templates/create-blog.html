@@ -47,6 +47,7 @@
                 <label for="tags">Tags</label>
                 <div class="tags-input" id="tags-container">
                     {{ form.tags }}
+                    {{ form.hidden_tags }}
                 </div>
                 <div class="form-help">Add relevant tags to help readers find your content</div>
             </div>
@@ -89,6 +90,7 @@
         // Simple tag input functionality
         const tagInput = document.getElementById('tag-input');
         const tagsContainer = document.getElementById('tags-container');
+        const hiddenTagField = document.getElementById('hidden-tags');
         const tags = [];
         
         tagInput.addEventListener('keypress', function(e) {
@@ -104,6 +106,7 @@
         
         function addTag(text) {
             tags.push(text);
+            hiddenTagField.value = tags.join(',');
             const tagElement = document.createElement('div');
             tagElement.className = 'tag-item';
             tagElement.innerHTML = `
@@ -119,6 +122,7 @@
                 tags.splice(index, 1);
             }
             element.remove();
+            hiddenTagField.value = tags.join(',');
         }
         
         // Simple toolbar functionality
