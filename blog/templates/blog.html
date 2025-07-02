@@ -7,7 +7,12 @@
         
         <article class="blog-post">
             <header class="blog-header">
-                <h1 class="blog-title">{{ blog.title }}</h1>
+                <div class="blog-header-top">
+                    <h1 class="blog-title">{{ blog.title }}</h1>
+                    {% if is_author %}
+                    <a href="../create/?id={{ blog.eid }}" class="btn btn-outline edit-btn">✏️ Edit Post</a>
+                    {% endif %}
+                </div>
                 <div class="blog-meta">
                     <div class="meta-item">
                         <span>👤</span>

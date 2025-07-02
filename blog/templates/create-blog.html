@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}Create New Post{% endblock %}
+{% block title %}{% if is_editing %}Edit Post{% else %}Create New Post{% endif %}{% endblock %}
 
 {% block content %}
 
 
     <div class="container medium">
         <div class="page-header">
-            <h1>Create New Blog Post</h1>
-            <p>Share your thoughts and ideas with the community</p>
+            <h1>{% if is_editing %}Edit Blog Post{% else %}Create New Blog Post{% endif %}</h1>
+            <p>{% if is_editing %}Update your post content{% else %}Share your thoughts and ideas with the community{% endif %}</p>
         </div>
         
         <!-- Error message section - uncomment when implementing backend
@@ -80,8 +80,7 @@
             
             <div class="form-actions">
                 <a href="../" class="btn btn-outline">Cancel</a>
-                <button type="button" class="btn btn-secondary">Save as Draft</button>
-                <button type="submit" class="btn btn-primary">Publish Post</button>
+                <button type="submit" class="btn btn-primary" id="submit-btn">{% if is_editing %}Update Post{% else %}Publish Post{% endif %}</button>
             </div>
         </form>
     </div>
@@ -92,6 +91,16 @@
         const tagsContainer = document.getElementById('tags-container');
         const hiddenTagField = document.getElementById('hidden-tags');
         const tags = [];
+        
+        // Load existing tags if editing
+        {% if is_editing and blog_values.tags %}
+        const existingTags = '{{ blog_values.tags|escapejs }}'.split(',').filter(tag => tag.trim());
+        existingTags.forEach(tag => {
+            if (tag.trim()) {
+                addTag(tag.trim());
+            }
+        });
+        {% endif %}
         
         tagInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -228,5 +237,24 @@
                 .replace(/^- (.*$)/gm, '<li>$1</li>')
                 .replace(/\n/g, '<br>');
         }
+        
+        // Dynamic submit button text based on publish status
+        const publishCheckbox = document.getElementById('publish-immediately');
+        const submitBtn = document.getElementById('submit-btn');
+        const isEditing = {% if is_editing %}true{% else %}false{% endif %};
+        
+        function updateSubmitButtonText() {
+            if (publishCheckbox.checked) {
+                submitBtn.textContent = isEditing ? 'Update Post' : 'Publish Post';
+            } else {
+                submitBtn.textContent = 'Draft Post';
+            }
+        }
+        
+        // Listen for changes to the publish checkbox
+        publishCheckbox.addEventListener('change', updateSubmitButtonText);
+        
+        // Set initial button text on page load
+        updateSubmitButtonText();
     </script>
     {% endblock %}

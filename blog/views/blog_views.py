@@ -10,10 +10,22 @@ def create_blog(request):
     if not request.session.get('eid'):
         return redirect('../login')
 
+    eid = request.GET.get('id') or ''
+    blog_values = None
+    is_editing = False
+
+    if eid:
+        try:
+            blog_values = Blogs.objects.get(eid=eid)
+            if blog_values.author_eid != request.session.get('eid'):
+                return redirect('../')
+            is_editing = True
+        except Blogs.DoesNotExist:
+            return redirect('../')
+
     if request.method == 'POST':
         form = CreateBlogForm(request.POST)
         if form.is_valid():
-
             title = form.cleaned_data['title']
             category = form.cleaned_data['category']
             excerpt = form.cleaned_data['excerpt']
@@ -22,46 +34,76 @@ def create_blog(request):
             tags = form.cleaned_data['hidden_tags']
             status = form.cleaned_data['status']
 
-            # return a table of all the fields in a HttpResponse
+            if status == True:
+                status = 'published'
+            else:
+                status = 'draft'
 
-            # Create HTML table to display form field values
-            # table_html = f"""
-            # <table border="1" style="border-collapse: collapse; width: 100%;">
-            #     <tr><th style="padding: 8px;">Field</th><th style="padding: 8px;">Value</th></tr>
-            #     <tr><td style="padding: 8px;">Title</td><td style="padding: 8px;">{title}</td></tr>
-            #     <tr><td style="padding: 8px;">Category</td><td style="padding: 8px;">{category}</td></tr>
-            #     <tr><td style="padding: 8px;">Excerpt</td><td style="padding: 8px;">{excerpt}</td></tr>
-            #     <tr><td style="padding: 8px;">Image URL</td><td style="padding: 8px;">{image_url}</td></tr>
-            #     <tr><td style="padding: 8px;">Blog Content</td><td style="padding: 8px;">{blog_content}</td></tr>
-            #     <tr><td style="padding: 8px;">Tags</td><td style="padding: 8px;">{tags}</td></tr>
-            #     <tr><td style="padding: 8px;">Status</td><td style="padding: 8px;">{status}</td></tr>
-            # </table>
-            # """
-
-            blog = Blogs(
-                author_eid=request.session.get('eid'),
-                eid=hash_string(title+category+tags+str(datetime.datetime.now())),
-                title=title,
-                category=category,
-                excerpt=excerpt,
-                image_url=image_url,
-                blog_content=blog_content,
-                tags=tags,
-                status=status
-            )
-            blog.save()
-
-            return redirect('../blog?id='+blog.eid)
+            if is_editing:
+                # Update existing blog
+                blog_values.title = title
+                blog_values.category = category
+                blog_values.excerpt = excerpt
+                blog_values.image_url = image_url
+                blog_values.blog_content = blog_content
+                blog_values.tags = tags
+                blog_values.status = status
+                blog_values.save()
+                return redirect('../blog?id='+blog_values.eid)
+            else:
+                # Create new blog
+                blog = Blogs(
+                    author_eid=request.session.get('eid'),
+                    eid=hash_string(title+category+tags+str(datetime.datetime.now())),
+                    title=title,
+                    category=category,
+                    excerpt=excerpt,
+                    image_url=image_url,
+                    blog_content=blog_content,
+                    tags=tags,
+                    status=status
+                )
+                blog.save()
+                return redirect('../blog?id='+blog.eid)
 
         return HttpResponse('Something went wrong')
 
-    form = CreateBlogForm()
-    return render(request, 'create-blog.html', {'user': grab_user_content(request), 'form': form})
+    # Initialize form with existing data if editing
+    if is_editing:
+        initial_data = {
+            'title': blog_values.title,
+            'category': blog_values.category,
+            'excerpt': blog_values.excerpt,
+            'image_url': blog_values.image_url,
+            'blog_content': blog_values.blog_content,
+            'hidden_tags': blog_values.tags,
+            'status': blog_values.status == 'published'
+        }
+        form = CreateBlogForm(initial=initial_data)
+    else:
+        form = CreateBlogForm()
+
+    return render(request, 'create-blog.html', {
+        'user': grab_user_content(request), 
+        'form': form, 
+        'blog_values': blog_values,
+        'is_editing': is_editing
+    })
+
 
 def view_blog(request):
     if request.method == 'GET':
         eid = request.GET.get('id')
         blog = Blogs.objects.get(eid=eid)
         blog.author = Members.objects.get(eid=blog.author_eid)
-        return render(request, 'blog.html', {'user': grab_user_content(request), 'blog': blog})
+        
+        # Check if the current user is the author of this blog
+        user_eid = request.session.get('eid')
+        is_author = user_eid == blog.author_eid if user_eid else False
+        
+        return render(request, 'blog.html', {
+            'user': grab_user_content(request), 
+            'blog': blog,
+            'is_author': is_author
+        })
     return render(request, 'demo-blog.html', {'user': grab_user_content(request)})

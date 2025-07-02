@@ -8,10 +8,17 @@
             <p>Discover amazing stories and insights from our community</p>
         </div>
         
+        {% if not blogs %}
+        <div class="no-posts">
+            <h3>No blog posts yet</h3>
+            <p>Be the first to share your thoughts with the community!</p>
+            <a href="/create" class="create-post-btn">Create Your First Post</a>
+        </div>
+        {% endif %}
+
+        {% if blogs %}
         <div class="blog-grid">
-            <!-- Sample Blog Post 1 -->
             {% for blog in blogs %}
-        <!-- Sample Blog Post 1 -->
             <article class="blog-card">
                 <div class="blog-image">
                     <img src="{{ blog.image_url }}" width="60" alt="{{ blog.title }}">
@@ -28,20 +35,37 @@
                     <a href="./blog?id={{ blog.eid }}" class="read-more">Read More</a>
                 </div>
             </article>
+            {% endfor %}            
+        </div>
+        {% endif %}
 
+        {% if drafts %}
+        <div class="page-header">
+            <h1>Drafts</h1>
+            <p>Your Drafted Post</p>
+        </div>
+
+        <div class="blog-grid">
+            {% for draft in drafts %}
+            <article class="blog-card">
+                <div class="blog-image">
+                    <img src="{{ draft.image_url }}" width="60" alt="{{ draft.title }}">
+                </div>
+                <div class="blog-content">
+                    <h2 class="blog-title">{{ draft.title }}</h2>
+                    <div class="blog-meta">
+                        <span>By {{ draft.author }}</span>
+                        <span>{{ draft.created_date }}</span>
+                    </div>
+                    <p class="blog-excerpt">
+                        {{ draft.excerpt }}
+                    </p>
+                    <a href="./blog?id={{ draft.eid }}" class="read-more">Read More</a>
+                </div>
+            </article>
             {% endfor %}
-            
-            <!-- Sample Blog Post 2 -->
-            
         </div>
+        {% endif %}
         
-        <!-- Uncomment this section if there are no posts -->
-        <!-- 
-        <div class="no-posts">
-            <h3>No blog posts yet</h3>
-            <p>Be the first to share your thoughts with the community!</p>
-            <a href="create-blog.html" class="create-post-btn">Create Your First Post</a>
-        </div>
-        -->
     </div>
 {% endblock %}
